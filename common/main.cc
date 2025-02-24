@@ -35,6 +35,14 @@
 
 #include "powerline.h"
 
+void disk_status( MemoryStatus & status ) ;
+std::string disk_string( const MemoryStatus & mem_status,
+  MEMORY_MODE mode,
+  bool use_colors,
+  bool use_powerline_left,
+  bool use_powerline_right,
+  bool segments_to_left,
+  short left_color );
 std::string cpu_string( CPU_MODE cpu_mode, unsigned int cpu_usage_delay, unsigned int graph_lines,
     bool use_colors = false,
     bool use_powerline_left = false, bool use_powerline_right = false, bool use_vert_graph = false)
@@ -289,9 +297,12 @@ int main( int argc, char** argv )
     return EXIT_FAILURE;
   }
 
-  MemoryStatus memory_status;
+  MemoryStatus memory_status, d_status;
   mem_status( memory_status );
-  std::cout << mem_string( memory_status, mem_mode, use_colors, use_powerline_left, use_powerline_right, segments_to_left, left_color )
+  disk_status( d_status );
+  std::cout << disk_string( d_status, mem_mode, use_colors, use_powerline_left, use_powerline_right, segments_to_left, left_color )
+    << mem_string( memory_status, mem_mode, use_colors, use_powerline_left, use_powerline_right, segments_to_left, left_color )
+
     << cpu_string( cpu_mode, cpu_usage_delay, graph_lines, use_colors, use_powerline_left, use_powerline_right, use_vert_graph )
     << load_string( use_colors, use_powerline_left, use_powerline_right, averages_count, segments_to_right, right_color );
 
